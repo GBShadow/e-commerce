@@ -1,12 +1,12 @@
-exports.handler = async event => {
+exports.handler = async (event, context, callback) => {
   const data = event.body
 
   JSON.parse(data)
 
   const { firstName, lastName } = data
 
-  return {
+  callback ({
     statusCode: 200,
-    body: `${fistName} ${lastName}`
-  }
+    body: JSON.stringify({ firstName, lastName})
+  })
 }
