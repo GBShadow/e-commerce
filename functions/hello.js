@@ -1,12 +1,10 @@
 exports.handler = async (event, context, callback) => {
-  const data = event.body
-
-  JSON.parse(data)
+  const data = JSON.parse(event.body)
 
   const { firstName, lastName } = data
 
-  callback ({
+  callback (null, {
     statusCode: 200,
-    body: JSON.stringify({ firstName, lastName})
+    body: JSON.stringify({ firstName, lastName })
   })
 }
