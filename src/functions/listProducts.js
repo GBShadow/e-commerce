@@ -26,14 +26,12 @@ exports.handler = async () => {
 
   const db = await connectToDatabase(process.env.MONGODB_URI)
 
-  const collection = db.collection('products')
+  const collection = await db.collection('products')
 
   const products = await collection.find()
 
-  console.log(products)
-
   return {
     statusCode: 200,
-    body: JSON.parse(products)
+    body: JSON.stringify({products})
   }
 }
