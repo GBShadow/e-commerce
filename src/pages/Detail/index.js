@@ -17,13 +17,14 @@ const Detail = ({ match }) => {
   const id = match.params.id;
 
   useEffect(() => {
-    axios.get("https://shadowshop.netlify.app/.netlify/functions/showProduct", {
-      headers: {
-        id: String(id)
+    axios.get("https://shadowshop.netlify.app/.netlify/functions/showProduct/", {
+      params: {
+        id
       }
     }).then((response) => {
       const data = {
         ...response.data,
+        id: response.data_id,
         priceFormatted: formatPrice(response.data.price),
       };
 
