@@ -20,6 +20,7 @@ const Home = () => {
         ...product,
         priceFormatted: formatPrice(product.price),
       }));
+      console.log(data)
 
       setProducts(data);
     });

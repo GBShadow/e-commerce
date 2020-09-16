@@ -28,11 +28,10 @@ exports.handler = async () => {
 
   const collection = db.collection('products')
 
+  const products = await collection.find()
 
-  return collection.find()
-  .then(response => response.json())
-  .then(data => ({
+  return {
     statusCode: 200,
-    body: data.products
-  }))
+    body: JSON.stringify(products)
+  }
 }
