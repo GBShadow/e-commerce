@@ -1,37 +1,39 @@
-const { MongoClient } = require('mongodb')
-const url = require('url')
+const { MongoClient } = require("mongodb");
+const url = require("url");
 
-let cachedDb = null
+let cachedDb = null;
 
 async function connectToDatabase(uri) {
-  if(cachedDb) {
-    return cachedDb
+  if (cachedDb) {
+    return cachedDb;
   }
 
   const client = await MongoClient.connect(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+    useUnifiedTopology: true,
+  });
 
-  const dbName = url.parse(uri).pathname.substr(1)
-  
-  const db = client.db(dbName)
+  const dbName = url.parse(uri).pathname.substr(1);
 
-  cachedDb = db
+  const db = client.db(dbName);
 
-  return db
+  cachedDb = db;
+
+  return db;
 }
 
-exports.handler = async () => {
+exports.handler = async (context) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-  const db = await connectToDatabase(process.env.MONGODB_URI)
+  const db = await connectToDatabase(process.env.MONGODB_URI);
 
-  const collection = await db.collection('products')
+  const collection = await db.collection("products");
 
-  const products = await collection.find()
+  const products = await collection.find();
 
-  return {
+  const response = {
     statusCode: 200,
-    body: JSON.stringify({products})
-  }
-}
+    body: JSON.stringify(products),
+  };
+  return response;
+};
