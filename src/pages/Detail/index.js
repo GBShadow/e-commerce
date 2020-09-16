@@ -24,7 +24,6 @@ const Detail = ({ match }) => {
     }).then((response) => {
       const data = {
         ...response.data,
-        id: response.data_id,
         priceFormatted: formatPrice(response.data.price),
       };
 
@@ -39,7 +38,7 @@ const Detail = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    const quantityInCart = cart.items.find((item) => item.id === product.id);
+    const quantityInCart = cart.items.find((item) => item.id === product._id);
     setQuantity(quantityInCart);
   }, [cart, product]);
 
