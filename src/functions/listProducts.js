@@ -1,5 +1,5 @@
-import { MongoClient } from 'mongodb'
-import url from 'url'
+const { MongoClient } = require('mongodb')
+const url = require('url')
 
 let cachedDb = null
 
