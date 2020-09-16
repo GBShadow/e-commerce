@@ -1,0 +1,67 @@
+{
+  "stock": [
+    {
+      "id": 1,
+      "amount": 3
+    },
+    {
+      "id": 2,
+      "amount": 5
+    },
+    {
+      "id": 3,
+      "amount": 2
+    },
+    {
+      "id": 4,
+      "amount": 1
+    },
+    {
+      "id": 5,
+      "amount": 5
+    },
+    {
+      "id": 6,
+      "amount": 10
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "title": "Tênis de Caminhada Leve Confortável",
+      "price": 179.9,
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg"
+    },
+    {
+      "id": 2,
+      "title": "Tênis VR Caminhada Confortável Detalhes Couro Masculino",
+      "price": 139.9,
+      "description": "Os “dad shoes” foram desenvolvidos originalmente com a performance em mente: sola robusta para amortecimento extra, silhueta corpulenta para suporte e conforto, e nenhum cuidado com a aparência. Afinal, eles eram direcionados aos corredores, e não aos Sneakerheads. Porém, após passar por algumas adaptações, o estilo ultrapassado renasceu em diversos modelos que conquistaram a simpatia das celebridades, iniciando uma forte tendência. Nesse sentido, a nova silhueta da 3 Stripes celebra as tendências da moda que se popularizaram juntamente com a Dance Music dos anos 90. Desse modo, o Falcon resgata o espírito descontraído e rebelde da época ao mesmo tempo em que oferece conforto duradouro para o dia a dia.",
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg"
+    },
+    {
+      "id": 3,
+      "title": "Tênis Adidas Duramo Lite 2.0",
+      "price": 219.9,
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg"
+    },
+    {
+      "id": 5,
+      "title": "Tênis VR Caminhada Confortável Detalhes Couro Masculino",
+      "price": 139.9,
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis2.jpg"
+    },
+    {
+      "id": 6,
+      "title": "Tênis Adidas Duramo Lite 2.0",
+      "price": 219.9,
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg"
+    },
+    {
+      "id": 4,
+      "title": "Tênis de Caminhada Leve Confortável",
+      "price": 179.9,
+      "image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg"
+    }
+  ]
+}
