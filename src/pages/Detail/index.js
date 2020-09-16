@@ -17,7 +17,11 @@ const Detail = ({ match }) => {
   const id = match.params.id;
 
   useEffect(() => {
-    axios.get(`http://localhost:3333/products/${id}`).then((response) => {
+    axios.get("https://shadowshop.netlify.app/.netlify/functions/showProduct", {
+      params: {
+        id
+      }
+    }).then((response) => {
       const data = {
         ...response.data,
         priceFormatted: formatPrice(response.data.price),

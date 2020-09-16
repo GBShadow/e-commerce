@@ -38,7 +38,7 @@ function run() {
 
     const M = conn.model('products');
 
-    const doc = yield M.findOne({ _id: "5f6197698666d4000827ff8b"});
+    const doc = yield M.findOne({ _id: params});
     const response = {
       statusCode: 200,
       body: JSON.stringify(doc)
