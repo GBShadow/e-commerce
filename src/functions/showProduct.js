@@ -8,10 +8,10 @@ const uri = 'mongodb+srv://gbshadow:gbs.123@cluster0.bsxsb.mongodb.net/stock?ret
 exports.handler = function(event, context, callback) {
 
   context.callbackWaitsForEmptyEventLoop = false;
-  console.log(event.headers)
-  const head = event.headers
 
-  run(head).
+  const params = event.queryStringParameters.id
+
+  run(params).
     then(res => {
       callback(null, res);
     }).
@@ -19,7 +19,7 @@ exports.handler = function(event, context, callback) {
 };
 
 function run(params) {
-
+ 
   return co(function*() {
 
     if (conn == null) {
@@ -40,7 +40,7 @@ function run(params) {
 
     const M = conn.model('products');
 
-    const doc = yield M.findOne({ _id: params });
+    const doc = yield M.findById({ _id: params });
     const response = {
       statusCode: 200,
       body: JSON.stringify(doc)
