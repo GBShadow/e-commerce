@@ -15,7 +15,7 @@ async function connectToDatabase(uri) {
 
   const dbName = url.parse(uri).pathname.substr(1)
   
-  const db = client.db(dbName)
+  const db = client.db(stock)
 
   cachedDb = db
 
@@ -39,6 +39,6 @@ exports.handler = async (event, context, callback) => {
 
   callback (null, {
     statusCode: 201,
-    body: JSON.stringify(product)
+    body: JSON.parse(product)
   })
 }
