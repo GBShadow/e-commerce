@@ -30,5 +30,8 @@ exports.handler = async () => {
 
   const products = await collection.find()
 
-  return products
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ products: products })
+  }
 }
