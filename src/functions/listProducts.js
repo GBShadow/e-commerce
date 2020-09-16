@@ -39,6 +39,6 @@ exports.handler = async (event, context, callback) => {
 
   callback (null, {
     statusCode: 201,
-    body: JSON.parse(product)
+    body: `${product}`
   })
 }
