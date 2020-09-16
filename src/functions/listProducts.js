@@ -15,7 +15,7 @@ async function connectToDatabase(uri) {
 
   const dbName = url.parse(uri).pathname.substr(1)
   
-  const db = client.db(stock)
+  const db = client.db(dbName)
 
   cachedDb = db
 
