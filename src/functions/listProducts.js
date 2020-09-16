@@ -22,18 +22,26 @@ async function connectToDatabase(uri) {
   return db;
 }
 
-exports.handler = async (context) => {
+const db = await connectToDatabase(process.env.MONGODB_URI);
+module.exports.getAll = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
-  const db = await connectToDatabase(process.env.MONGODB_URI);
-
-  const collection = await db.collection("products");
-
-  const products = await collection.find();
-
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(products),
-  };
-  return response;
+  connectToDatabase(process.env.MONGODB_URI).then(() => {
+    const collection = db.collection("products");
+    collection
+      .find()
+      .then((products) =>
+        callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(products),
+        })
+      )
+      .catch((err) =>
+        callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { "Content-Type": "text/plain" },
+          body: "Could not fetch the products.",
+        })
+      );
+  });
 };

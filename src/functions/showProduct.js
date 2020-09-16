@@ -1,38 +1,55 @@
-const { MongoClient } = require('mongodb')
-const url = require('url')
+'use strict';
 
-let cachedDb = null
+module.exports.create = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-async function connectToDatabase(uri) {
-  if(cachedDb) {
-    return cachedDb
-  }
+  connectToDatabase()
+    .then(() => {
+      Note.create(JSON.parse(event.body))
+        .then(note => callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(note)
+        }))
+        .catch(err => callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'Could not create the note.'
+        }));
+    });
+};
 
-  const client = await MongoClient.connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+module.exports.getOne = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-  const dbName = url.parse(uri).pathname.substr(1)
-  
-  const db = client.db(dbName)
+  connectToDatabase()
+    .then(() => {
+      Note.findById(event.pathParameters.id)
+        .then(note => callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(note)
+        }))
+        .catch(err => callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'Could not fetch the note.'
+        }));
+    });
+};
 
-  cachedDb = db
+module.exports.getAll = (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
 
-  return db
-}
-
-const teste = async () => {
-
-  const db = await connectToDatabase(process.env.MONGODB_URI)
-
-  const collection = db.collection('products')
-
-  const products = await collection.find()
-
-  console.log(products)
-
-  return products
-}
-
-export default teste
+  connectToDatabase()
+    .then(() => {
+      Note.find()
+        .then(notes => callback(null, {
+          statusCode: 200,
+          body: JSON.stringify(notes)
+        }))
+        .catch(err => callback(null, {
+          statusCode: err.statusCode || 500,
+          headers: { 'Content-Type': 'text/plain' },
+          body: 'Could not fetch the notes.'
+        }))
+    });
+};
