@@ -1,55 +1,48 @@
-'use strict';
+const co = require('co');
+const mongoose = require('mongoose');
 
-module.exports.create = (event, context, callback) => {
+let conn = null;
+
+const uri = 'mongodb+srv://gbshadow:gbs.123@cluster0.bsxsb.mongodb.net/stock?retryWrites=true&w=majority';
+
+exports.handler = function(event, context, callback) {
+
   context.callbackWaitsForEmptyEventLoop = false;
 
-  connectToDatabase()
-    .then(() => {
-      Note.create(JSON.parse(event.body))
-        .then(note => callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(note)
-        }))
-        .catch(err => callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { 'Content-Type': 'text/plain' },
-          body: 'Could not create the note.'
-        }));
-    });
+  const params = event.queryStringParameters
+  run().
+    then(res => {
+      callback(null, res);
+    }).
+    catch(error => callback(error));
 };
 
-module.exports.getOne = (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+function run() {
+  return co(function*() {
 
-  connectToDatabase()
-    .then(() => {
-      Note.findById(event.pathParameters.id)
-        .then(note => callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(note)
-        }))
-        .catch(err => callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { 'Content-Type': 'text/plain' },
-          body: 'Could not fetch the note.'
-        }));
-    });
-};
+    if (conn == null) {
+      conn = yield mongoose.createConnection(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        bufferCommands: false,
+        bufferMaxEntries: 0
+      });
+      conn.model('products', new mongoose.Schema({
+        id: String,
+        title: String,
+        price: Number,
+        description: String,
+        image: String,
+      }));
+    }
 
-module.exports.getAll = (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+    const M = conn.model('products');
 
-  connectToDatabase()
-    .then(() => {
-      Note.find()
-        .then(notes => callback(null, {
-          statusCode: 200,
-          body: JSON.stringify(notes)
-        }))
-        .catch(err => callback(null, {
-          statusCode: err.statusCode || 500,
-          headers: { 'Content-Type': 'text/plain' },
-          body: 'Could not fetch the notes.'
-        }))
-    });
-};
+    const doc = yield M.findOne({ where: { _id: "5f6197698666d4000827ff8b"} });
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(doc)
+    };
+    return response;
+  });
+}
