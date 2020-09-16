@@ -15,7 +15,7 @@ const Home = () => {
   const { cart, addToCart } = useCart();
 
   useEffect(() => {
-    axios.get("http://localhost:3333/products").then((response) => {
+    axios.get(process.env.SERVERLESS_URI).then((response) => {
       const data = response.data.map((product) => ({
         ...product,
         priceFormatted: formatPrice(product.price),
