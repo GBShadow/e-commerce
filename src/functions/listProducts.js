@@ -30,8 +30,10 @@ exports.handler = async () => {
 
   const products = await collection.find()
 
+  console.log(products)
+
   return {
     statusCode: 200,
-    body: JSON.stringify(products)
+    body: JSON.parse(products)
   }
 }

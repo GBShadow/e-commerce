@@ -16,11 +16,11 @@ const Home = () => {
 
   useEffect(() => {
     axios.get(process.env.SERVERLESS_URI).then((response) => {
+      console.log(response.data)
       const data = response.data.map((product) => ({
         ...product,
         priceFormatted: formatPrice(product.price),
       }));
-      console.log(data)
 
       setProducts(data);
     });
