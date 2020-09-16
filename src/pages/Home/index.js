@@ -16,8 +16,7 @@ const Home = () => {
 
   useEffect(() => {
     axios.get("https://shadowshop.netlify.app/.netlify/functions/listProducts").then((response) => {
-      console.log(response.data)
-      const data = response.data.data.map((product) => ({
+      const data = response.data.map((product) => ({
         ...product,
         priceFormatted: formatPrice(product.price),
       }));

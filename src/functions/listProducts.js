@@ -1,33 +1,47 @@
-const faunadb = require('faunadb')
-const q = faunadb.query
+const co = require('co');
+const mongoose = require('mongoose');
 
-exports.handler = (event, context) => {
-  console.log('Function `todo-read-all` invoked')
-  /* configure faunaDB Client with our secret */
-  const client = new faunadb.Client({
-    secret: process.env.FAUNADB_SERVER_SECRET
-  }) 
-  return client.query(q.Paginate(q.Match(q.Ref('indexes/all_products'))))
-    .then((response) => {
-      const todoRefs = response.data
-      console.log('Todo refs', todoRefs)
-      console.log(`${todoRefs.length} todos found`)
-      // create new query out of todo refs. http://bit.ly/2LG3MLg
-      const getAllTodoDataQuery = todoRefs.map((ref) => {
-        return q.Get(ref)
-      })
-      // then query the refs
-      return client.query(getAllTodoDataQuery).then((ret) => {
-        return {
-          statusCode: 200,
-          body: JSON.stringify(ret)
-        }
-      })
-    }).catch((error) => {
-      console.log('error', error)
-      return {
-        statusCode: 400,
-        body: JSON.stringify(error)
-      }
-    })
+let conn = null;
+
+const uri = 'mongodb+srv://gbshadow:gbs.123@cluster0.bsxsb.mongodb.net/stock?retryWrites=true&w=majority';
+
+exports.handler = function(event, context, callback) {
+
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  run().
+    then(res => {
+      callback(null, res);
+    }).
+    catch(error => callback(error));
+};
+
+function run() {
+  return co(function*() {
+
+    if (conn == null) {
+      conn = yield mongoose.createConnection(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        bufferCommands: false,
+        bufferMaxEntries: 0
+      });
+      conn.model('products', new mongoose.Schema({
+        id: String,
+        title: String,
+        price: Number,
+        description: String,
+        image: String,
+      }));
+    }
+
+    const M = conn.model('products');
+
+    const doc = yield M.find();
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify(doc)
+    };
+    return response;
+  });
 }
