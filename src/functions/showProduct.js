@@ -9,7 +9,6 @@ exports.handler = function(event, context, callback) {
 
   context.callbackWaitsForEmptyEventLoop = false;
 
-  const params = event.queryStringParameters
   run().
     then(res => {
       callback(null, res);
@@ -18,6 +17,7 @@ exports.handler = function(event, context, callback) {
 };
 
 function run() {
+
   return co(function*() {
 
     if (conn == null) {
@@ -38,7 +38,8 @@ function run() {
 
     const M = conn.model('products');
 
-    const doc = yield M.findOne({ _id: params});
+    const doc = yield M.findOne({ _id: queryStringParameters
+    });
     const response = {
       statusCode: 200,
       body: JSON.stringify(doc)
