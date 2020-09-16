@@ -18,8 +18,8 @@ const Detail = ({ match }) => {
 
   useEffect(() => {
     axios.get("https://shadowshop.netlify.app/.netlify/functions/showProduct", {
-      params: {
-        id
+      headers: {
+        id: String(id)
       }
     }).then((response) => {
       const data = {

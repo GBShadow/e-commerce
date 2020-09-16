@@ -8,8 +8,10 @@ const uri = 'mongodb+srv://gbshadow:gbs.123@cluster0.bsxsb.mongodb.net/stock?ret
 exports.handler = function(event, context, callback) {
 
   context.callbackWaitsForEmptyEventLoop = false;
+  console.log(event.headers)
+  const head = event.headers
 
-  run(event.queryStringParameters).
+  run(head).
     then(res => {
       callback(null, res);
     }).
