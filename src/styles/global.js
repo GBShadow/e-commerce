@@ -19,7 +19,9 @@ export default createGlobalStyle`
     font: 14px Roboto, sans-serif;
   }
 
-  #root {
+  #root, body {
+    width: 100vw;
+    height: 100vh;
     max-width: 1020px;
     margin: 0 auto;
     padding: 0 20px 50px;

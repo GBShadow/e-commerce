@@ -22,16 +22,13 @@ async function connectToDatabase(uri) {
   return db
 }
 
-exports.handler = async (callback) => {
+exports.handler = async () => {
 
   const db = await connectToDatabase(process.env.MONGODB_URI)
 
   const collection = db.collection('products')
 
-    await collection.find()
+  const products = await collection.find()
 
-  callback (null, {
-    statusCode: 200,
-    body: { ok: true }
-  })
+  return products
 }
