@@ -15,7 +15,7 @@ const Home = () => {
   const { cart, addToCart } = useCart();
 
   useEffect(() => {
-    axios.get(process.env.SERVERLESS_URI).then((response) => {
+    axios.get("https://shadowshop.netlify.app/.netlify/functions/listProducts").then((response) => {
       console.log(response.data)
       const data = response.data.map((product) => ({
         ...product,
