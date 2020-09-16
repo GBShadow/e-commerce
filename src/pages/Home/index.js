@@ -18,6 +18,7 @@ const Home = () => {
     axios.get("https://shadowshop.netlify.app/.netlify/functions/listProducts").then((response) => {
       const data = response.data.map((product) => ({
         ...product,
+        id: product._id,
         priceFormatted: formatPrice(product.price),
       }));
 
